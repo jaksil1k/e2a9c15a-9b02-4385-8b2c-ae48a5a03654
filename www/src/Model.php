@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Exception;
 use PDO;
 
 abstract class Model
@@ -59,6 +60,7 @@ abstract class Model
     {
         $set = implode(", ", array_map(fn($k) => "$k = ?", array_keys($data)));
         $stmt = $this->pdo->prepare("UPDATE " . static::$table . " SET $set WHERE " . static::$primaryKey . " = ?");
+        // throw new Exception("".$id.reset(array_keys($data)));
         return $stmt->execute([...array_values($data), $id]);
     }
 

@@ -7,6 +7,9 @@ use App\Profile\Blocks\ClassBlock;
 use App\Profile\Blocks\EmailBlock;
 use App\Profile\Blocks\FioBlock;
 use App\Profile\Blocks\FacultativeBlock;
+use App\Profile\Blocks\ChosenPredmetBlock;
+use App\Profile\Blocks\OlimpicBlock;
+use App\Profile\Blocks\SportBlock;
 
 /** 
  * стркуктура профиля пользователя (школьника) 
@@ -23,6 +26,9 @@ class ProfileStruct
         EmailBlock::class,
         ClassBlock::class,
         FacultativeBlock::class,
+        ChosenPredmetBlock::class,
+        OlimpicBlock::class,
+        SportBlock::class,
         // \App\Profile\Blocks\BirthdateBlock::class, 
         // \Profile\Blocks\FacultativeBlock::class, 
         // \Profile\Blocks\SportBlock::class, // задание 
