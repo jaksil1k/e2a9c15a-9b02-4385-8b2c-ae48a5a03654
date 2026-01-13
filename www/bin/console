@@ -1,0 +1,53 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Symfony\Component\Dotenv\Dotenv;
+use Doctrine\Migrations\Configuration\Migration\PhpFile;
+use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\Tools\Console\Command;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\Migrations\Configuration\Connection\ExistingConnection;
+use Symfony\Component\Console\Application;
+
+// Загрузка .env
+$dotenv = new Dotenv();
+$dotenv->loadEnv(__DIR__ . '/../.env');
+
+// Конфигурация подключения
+$connection = DriverManager::getConnection([
+    'dbname'   => $_ENV['DB_NAME'] ?? 'assignment_backend_0825',
+    'user'     => $_ENV['DB_USER'] ?? 'root',
+    'password' => $_ENV['DB_PASS'] ?? 'password',
+    'host'     => $_ENV['DB_HOST'] ?? 'assignment_backend_0825_db',
+    'driver'   => $_ENV['DB_DRIVER'] ?? 'pdo_mysql',
+    'charset'  => 'utf8mb4',
+    'driverOptions' => [
+        \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci"
+    ]
+]);
+
+// Загружаем конфигурацию миграций
+// $config = new PhpFile(__DIR__ . '/../config/migrations.php');
+$config = require __DIR__ . '/../config/migrations.php';
+
+// Создаём DependencyFactory
+$dependencyFactory = DependencyFactory::fromConnection($config, new ExistingConnection($connection));
+
+// Регистрируем консольное приложение
+$cli = new Application('Doctrine Migrations');
+
+// Добавляем команды
+$cli->addCommands([
+    new Command\DiffCommand($dependencyFactory),
+    new Command\ExecuteCommand($dependencyFactory),
+    new Command\GenerateCommand($dependencyFactory),
+    new Command\LatestCommand($dependencyFactory),
+    new Command\MigrateCommand($dependencyFactory),
+    new Command\RollupCommand($dependencyFactory),
+    new Command\StatusCommand($dependencyFactory),
+    new Command\VersionCommand($dependencyFactory),
+]);
+
+$cli->run();

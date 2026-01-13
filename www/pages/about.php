@@ -1,0 +1,1 @@
+<?php echo '<h1>About Page</h1><p>This is a simple PHP project with .env and migrations.</p>'; ?>

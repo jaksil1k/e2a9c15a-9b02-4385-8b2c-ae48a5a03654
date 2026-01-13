@@ -1,0 +1,1 @@
+<?php echo '<h1>Home Page</h1><p>Welcome to the PHP starter project!</p>'; ?>
